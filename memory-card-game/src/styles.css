@@ -1,1 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */
+
+body {
+    background-color: whitesmoke;
+    margin: 0px;
+    margin-top: 0px;
+    padding: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+    font-weight: bolder;
+    font-size: x-large;
+    background-color: #e49621;
+    text-align: center;
+    justify-content: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+footer {
+    font-size: large;
+    background-color: #e49621;
+    text-align: center;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    margin-top: 30px;
+}
+
+footer a {
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
+}
