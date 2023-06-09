@@ -51,16 +51,16 @@ export class HomeComponent {
   cardService: CardService = inject(CardService);  // will manage the cards
   deck: Card[] = [];  // will include the Memory Cards
 
-  maximum: number = 0;  // will give the target pairs
+  maximum = 0;  // will give the target pairs
 
   flippedCards: Card[] = [];  // will include the flipped cards
-  finishedCards: number = 0;  // will count how many pairs where found
-  moves: number = 0;          // will count how many time the user tried to find pairs
+  finishedCards = 0;  // will count how many pairs where found
+  moves = 0;          // will count how many time the user tried to find pairs
 
   // variables to control buttons and displays
-  startDis: boolean = false;
-  resetDis: boolean = true;
-  solved: boolean = false;
+  startDis = false;
+  resetDis = true;
+  solved = false;
 
   /**
    * will initially generate a deck with 10 pairs

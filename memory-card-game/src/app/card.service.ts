@@ -7,8 +7,6 @@ import { Card } from './card';
 export class CardService {
   deck: Card[] = [];
 
-  constructor() { }
-
   /**
    * generates 10 different kind of memory cards two times
    * 
