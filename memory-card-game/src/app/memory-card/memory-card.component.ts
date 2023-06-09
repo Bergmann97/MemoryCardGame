@@ -44,9 +44,9 @@ import { Card } from '../card';
 })
 export class MemoryCardComponent {
 
-  @Input() card!: Card;
-  @Input() showBack!: string;
-  @Output() clickedCard = new EventEmitter();
+  @Input() card!: Card;  // the card to display
+  @Input() showBack!: string;  // indicator for flipping the card
+  @Output() clickedCard = new EventEmitter();  // EventHandler for clicking on Card
 
   constructor() {}
 
