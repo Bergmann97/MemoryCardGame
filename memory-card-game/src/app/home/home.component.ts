@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MemoryCardComponent } from '../memory-card/memory-card.component';
 import { Card } from '../card';
-import { CardService } from '../card.service';
 
 @Component({
   selector: 'app-home',
@@ -49,8 +48,6 @@ import { CardService } from '../card.service';
 })
 export class HomeComponent {
   deck: Card[] = [];
-  cardService: CardService = inject(CardService);
-
 
   maximum: number = 0;
 
@@ -63,7 +60,7 @@ export class HomeComponent {
   solved: boolean = false;
 
   constructor() {
-    this.deck = this.cardService.generateDeck();
+    this.generateDeck();
   }
 
   initGame() {
