@@ -6,6 +6,8 @@
 
 This is a **Memory Card** Game programmed for [OneXip GmbH](https://www.onexip.com/). It is programmed using [Angular](https://angular.io/).
 
+Die Rechte der genutzten Grafiken liegen bei der OneXip GmbH.
+
 
 ## Functions
 
