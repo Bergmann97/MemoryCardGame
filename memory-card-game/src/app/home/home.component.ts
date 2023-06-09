@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MemoryCardComponent } from '../memory-card/memory-card.component';
 import { Card } from '../card';
+import { CardService } from '../card.service';
 
 @Component({
   selector: 'app-home',
@@ -47,6 +48,8 @@ import { Card } from '../card';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
+  cardService: CardService = inject(CardService);
+
   deck: Card[] = [];
 
   maximum: number = 0;
@@ -60,56 +63,16 @@ export class HomeComponent {
   solved: boolean = false;
 
   constructor() {
-    this.generateDeck();
+    this.deck = this.cardService.generateDeck();
   }
 
   initGame() {
-    this.shuffleCards(this.deck);
-    this.activateCards(this.deck);
+    this.cardService.shuffleCards(this.deck);
+    this.cardService.activateCards(this.deck);
+
     this.startDis = true;
     this.resetDis = false;
     this.maximum = this.deck.length/2;
-}
-
-  generateDeck() {
-    for (let i = 1; i <= 10; i++) {
-      const element: Card = {
-        id: i,
-        state: "unclickable"
-      };
-
-      this.deck.push({ ...element });
-      this.deck.push({ ...element });
-    }
-  }
-
-  activateCards(cardDeck: Card[]) {
-    for (let i = 0; i < cardDeck.length; i++) {
-      const element = cardDeck[i];
-      element.state = "covered";
-    }
-  }
-
-  deactivateCards(cardDeck: Card[]) {
-    for (let i = 0; i < cardDeck.length; i++) {
-      const element = cardDeck[i];
-      element.state = "unclickable";
-    }
-  }
-
-  shuffleCards(cardDeck: Card[]) {
-    // shuffle the cards
-    let currentIndex: number = cardDeck.length, randomIndex;
-
-    while (currentIndex != 0) {
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-      
-      [cardDeck[currentIndex], cardDeck[randomIndex]] = [
-        cardDeck[randomIndex], cardDeck[currentIndex]];
-    }
-
-    this.deck = cardDeck;
   }
 
   clickedCard(index: number) {
@@ -132,8 +95,8 @@ export class HomeComponent {
       const card2: Card = this.flippedCards[1];
 
       if (card1.id == card2.id) {
-        this.finishedCards++;
         console.log("YOU FOUND A PAIR -> " + this.finishedCards.toString());
+        this.finishedCards++;
         this.flippedCards = [];
         card1.state = "paired";
         card2.state = "paired";
@@ -155,11 +118,12 @@ export class HomeComponent {
   }
 
   resetGame() {
+    this.cardService.shuffleCards(this.deck);
+    this.cardService.deactivateCards(this.deck);
+
     this.maximum = 0;
     this.flippedCards = [];
     this.finishedCards = 0;
-    this.shuffleCards(this.deck);
-    this.deactivateCards(this.deck);
     this.solved = false;
     this.startDis = false;
     this.resetDis = true;
