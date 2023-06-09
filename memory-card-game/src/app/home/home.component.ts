@@ -48,24 +48,31 @@ import { CardService } from '../card.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-  cardService: CardService = inject(CardService);
+  cardService: CardService = inject(CardService);  // will manage the cards
+  deck: Card[] = [];  // will include the Memory Cards
 
-  deck: Card[] = [];
+  maximum: number = 0;  // will give the target pairs
 
-  maximum: number = 0;
+  flippedCards: Card[] = [];  // will include the flipped cards
+  finishedCards: number = 0;  // will count how many pairs where found
+  moves: number = 0;          // will count how many time the user tried to find pairs
 
-  flippedCards: Card[] = [];
-  finishedCards: number = 0;
-  moves: number = 0;
-
+  // variables to control buttons and displays
   startDis: boolean = false;
   resetDis: boolean = true;
   solved: boolean = false;
 
+  /**
+   * will initially generate a deck with 10 pairs
+   */
   constructor() {
     this.deck = this.cardService.generateDeck();
   }
 
+  /**
+   * will be called when start is pressed. will then shuffle the cards and activates them and defines the target pair
+   * count
+   */
   initGame() {
     this.cardService.shuffleCards(this.deck);
     this.cardService.activateCards(this.deck);
@@ -75,14 +82,22 @@ export class HomeComponent {
     this.maximum = this.deck.length/2;
   }
 
+  /**
+   * eventhandler for clicking on a card. Will check if another card can be flipped and will then flip it and check
+   * if a pair was found
+   * 
+   * @param index index of clicked card
+   */
   clickedCard(index: number) {
-    const card = this.deck[index];
+    const card = this.deck[index];  // get the clicked card
     console.log("FLIP CARD: " + card.id);
 
+    // check if the card is not already flipped and if not already 2 cards are flipped
     if (card.state == "covered" && this.flippedCards.length < 2) {
       card.state = "uncovered";
       this.flippedCards.push(card);
 
+      // if this was the second card, check if a pair was found
       if (this.flippedCards.length == 2) {
         this.checkPair();
         this.moves++;
@@ -90,10 +105,16 @@ export class HomeComponent {
     }
   }
 
+  /**
+   * reads flipped cards and checks if they are the same. if it is the same keep them flipped otherwise cover them again
+   * 
+   * this function has a smaller delay, such that the user can have a look at the flipped cards
+   */
   checkPair() {
       const card1: Card = this.flippedCards[0];
       const card2: Card = this.flippedCards[1];
 
+      // check if a pair was found
       if (card1.id == card2.id) {
         console.log("YOU FOUND A PAIR -> " + this.finishedCards.toString());
         this.finishedCards++;
@@ -101,14 +122,15 @@ export class HomeComponent {
         card1.state = "paired";
         card2.state = "paired";
 
+        // check if all pairs where found and set game as solved
         if (this.finishedCards == this.maximum) {
           console.log("YOU HAVE FOUND ALL PAIRS! CONGRATULATIONS!");
           this.solved = true;
         }
-
-      } else {
+      } else {  // no pair found
         setTimeout(() => {
           console.log("THIS WAS NO PAIR");
+          // remove the flipped cards from memory and cover them again
           this.flippedCards = [];
           card1.state = "covered";
           card2.state = "covered";
@@ -117,6 +139,10 @@ export class HomeComponent {
       }
   }
 
+  /**
+   * resets all parts of the game. shuffles the card deck and deactivates them (new game start need click on start)
+   * sets the controler variables for UI and resets memory variables
+   */
   resetGame() {
     this.cardService.shuffleCards(this.deck);
     this.cardService.deactivateCards(this.deck);
